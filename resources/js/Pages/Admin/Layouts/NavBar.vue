@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-light bg-white shadow-sm" style="height: 60px;">
+    <nav class="navbar navbar-light bg-white shadow-sm fixed-top">
         <div class="container-fluid h-100 d-flex align-items-center">
             <button class="btn btn-outline-secondary me-3" type="button" @click="$emit('toggle-sidebar')"
                 aria-label="Toggle sidebar">
@@ -32,3 +32,8 @@ const logout = () => {
     router.post(route('logout'))
 }
 </script>
+<style>
+.navbar {
+    z-index: 1040;
+}
+</style>

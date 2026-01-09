@@ -1,5 +1,5 @@
 <template>
-    <aside class="bg-dark text-white position-fixed top-0 h-100 z-1030" :class="{
+    <aside class="bg-dark text-white position-fixed h-100 z-1030" style="top: 60px;" :class="{
         'start-0': isMobile || !collapsed,
         'start-neg-260': isMobile && collapsed
     }" :style="{
@@ -13,19 +13,12 @@
         </div>
         <div class="p-1">
             <ul class="nav flex-column">
-                <li class="nav-item mb-2">
-                    <Link :href="route('admin.dashboard')" class="nav-link text-white d-flex align-items-center gap-2"
-                        :class="{ 'bg-primary rounded': $page.url === '/admin/dashboard' }" @click="closeOnMobile">
-                        <span><i class="bi bi-building"></i></span>
+                <li class="nav-item">
+                    <Link :href="route('admin.dashboard')"
+                        class="nav-link d-flex align-items-center gap-2 px-3 py-2  text-dark"
+                        :class="{ active: $page.url === '/admin/dashboard' }" @click="closeOnMobile">
+                        <i class="bi bi-speedometer2"></i>
                         <span v-if="!collapsed || isMobile">Dashboard</span>
-                    </Link>
-                </li>
-                <li class="nav-item mb-2">
-                    <Link href="#" class="nav-link text-white d-flex align-items-center gap-2"
-                        :class="{ 'bg-primary rounded': $page.url.startsWith('/admin/tenants') }"
-                        @click="closeOnMobile">
-                        <span><i class="bi bi-building"></i></span>
-                        <span v-if="!collapsed || isMobile">Tenants</span>
                     </Link>
                 </li>
             </ul>
@@ -65,5 +58,10 @@ const closeOnMobile = () => {
 
 .z-1030 {
     z-index: 1030;
+}
+
+.nav-link.active {
+    background-color: #0d6efd;
+    border-radius: 0.375rem;
 }
 </style>

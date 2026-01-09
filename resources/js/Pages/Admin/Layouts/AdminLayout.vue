@@ -1,44 +1,79 @@
 <template>
-    <div class="d-flex flex-column min-vh-100">
-        <NavBar @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
-        <div v-if="isMobile && isSidebarOpen" class="position-fixed top-0 start-0 w-100 h-100 bg-black opacity-50"
-            style="z-index: 1029;" @click="isSidebarOpen = false"></div>
-        <SideBar :collapsed="!isSidebarOpen" :is-mobile="isMobile" />
-        <div class="flex-grow-1 overflow-auto">
-            <main :style="{
-                marginLeft: !isMobile ? (isSidebarOpen ? '260px' : '60px') : '0',
-                transition: 'margin-left 0.25s ease',
-            }"
-            class="mt-2">
-                <slot />
-            </main>
-        </div>
+    <div class="admin-layout d-flex flex-column min-vh-100">
+        <NavBar @toggle-sidebar="toggleSidebar" />
+
+        <div v-if="isMobile && sidebarOpen" class="sidebar-overlay" @click="sidebarOpen = false" />
+
+        <SideBar :collapsed="!sidebarOpen" :is-mobile="isMobile" />
+
+        <!-- CONTEÚDO -->
+        <main class="main-content flex-grow-1" :class="{ 'sidebar-collapsed': !sidebarOpen && !isMobile }">
+            <slot />
+        </main>
+
+        <!-- FOOTER -->
         <Footer />
     </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
-import SideBar from './SideBar.vue';
-import NavBar from './NavBar.vue';
-import Footer from './Footer.vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import NavBar from './NavBar.vue'
+import SideBar from './SideBar.vue'
+import Footer from './Footer.vue'
 
-const windowWidth = ref(window.innerWidth)
-const isSidebarOpen = ref(true)
+const sidebarOpen = ref(true)
+const width = ref(window.innerWidth)
 
-const isMobile = computed(() => windowWidth.value < 768)
+const isMobile = computed(() => width.value < 768)
 
-watch(isMobile, (newIsMobile) => {
-    if (!newIsMobile) {
-        isSidebarOpen.value = true
-    }
-})
+const toggleSidebar = () => {
+    sidebarOpen.value = !sidebarOpen.value
+}
 
-onMounted(() => {
-    const handleResize = () => {
-        windowWidth.value = window.innerWidth
-    }
-    window.addEventListener('resize', handleResize)
-    onBeforeUnmount(() => window.removeEventListener('resize', handleResize))
-})
+const resize = () => (width.value = window.innerWidth)
+
+onMounted(() => window.addEventListener('resize', resize))
+onUnmounted(() => window.removeEventListener('resize', resize))
 </script>
+
+<style scoped>
+.admin-layout {
+    min-height: 100vh;
+}
+
+.main-content {
+    margin-left: 260px;
+    padding: 1.5rem;
+    transition: margin-left 0.25s ease;
+    padding-top: 76px;
+
+}
+
+.sidebar-collapsed {
+    margin-left: 60px;
+}
+
+@media (max-width: 767px) {
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+.sidebar-collapsed {
+    margin-left: 60px;
+}
+
+@media (max-width: 767px) {
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1029;
+}
+</style>
