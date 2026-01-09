@@ -6,9 +6,8 @@ use Stancl\Tenancy\Database\Models\Domain;
 
 return [
     'tenant_model' => \App\Models\Tenant::class,
+    'domain_model' => \App\Models\Domain::class,
     'id_generator' => Stancl\Tenancy\UUIDGenerator::class,
-
-    'domain_model' => Domain::class,
 
     /**
      * The list of domains hosting your central app.
