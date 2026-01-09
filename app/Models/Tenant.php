@@ -4,12 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Stancl\Tenancy\Contracts\Tenant as TenantContract;
-use Stancl\Tenancy\Database\Concerns\CentralConnection;
-use Stancl\Tenancy\Tenancy;
 
 class Tenant extends Model implements TenantContract
 {
-    use CentralConnection;
     protected $fillable = ['id', 'name', 'slug'];
 
     public function getTenantKey(): string

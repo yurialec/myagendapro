@@ -5,5 +5,4 @@
 </template>
 
 <script setup>
-// Nada por enquanto
 </script>
